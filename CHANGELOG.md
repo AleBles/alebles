@@ -5,6 +5,27 @@ All notable changes to the site source will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-04-18
+
+### Added
+- `scripts/watch.ts`: initial build, static server, and `src/` file watcher with debounced rebuild, all in one process. `bun run preview` now runs the full dev loop.
+- Blog post on the ECR pull-through cache `library/` prefix gotcha, linking out to the LinkedIn original.
+- Terminal-styled header: green phosphor prompt (`> ale bles_`) with a blinking cursor, scan lines, text glow, and a CRT-style vignette.
+- Nokia LCD screen filter on the Snake canvas: pixel grid, viewing-angle sheen, corner vignette, plus a subtle `contrast`/`saturate` pass on the canvas itself.
+- Location (`Amsterdam / Almere`) now links to Google Maps; company (`@azerion`) now links to `azerion.com`. Both use the existing grey-to-accent hover.
+
+### Changed
+- `linkedinUrl` is now optional in post frontmatter. Posts *with* a LinkedIn URL skip the local post page entirely and link directly from the blog index card (title + "Read on LinkedIn"). Posts *without* one continue to render at `/blog/<slug>/` and the card links internally. `src/pages/post.html` dropped its unused `<!--POST_LINKEDIN-->` slot.
+- Menu ordering: nav buttons (Home/Projects/Blog) moved above the social links. The `border-top` on `.nav-buttons` became a `border-bottom` to match the new position.
+- Hello-world post lost its `linkedinUrl` (the site launch announcement lives in-repo, not on LinkedIn) and its title no longer uses an em-dash.
+- README frontmatter example notes `linkedinUrl` as optional.
+
+### Removed
+- `dev` script from `package.json`: `preview` now does everything `dev` did and also serves the built output.
+- Twitter/X icon from the social links.
+- Hover arrow (`▸`) on menu links and the associated `padding-left: 30px` hover shift (it was also nudging the profile icons sideways on hover). Dead `.menu ul` / `.menu li` rules cleaned up at the same time.
+- All em-dashes from site-authored prose (README, CHANGELOG, page partials, posts, build-script page titles) as a project-wide preference.
+
 ## [0.2.0] - 2026-04-18
 
 ### Added
@@ -28,4 +49,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Site-specific `README.md` on the `site` branch.
 
 ### Removed
-- `CNAME` and the legacy Jekyll `.gitignore` from `main` — `main` now holds only the profile `README.md`. The custom domain is re-emitted into `dist/` by the build so it lands on `gh-pages`.
+- `CNAME` and the legacy Jekyll `.gitignore` from `main`; `main` now holds only the profile `README.md`. The custom domain is re-emitted into `dist/` by the build so it lands on `gh-pages`.

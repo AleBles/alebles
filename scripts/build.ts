@@ -19,7 +19,7 @@ type Post = {
     title: string;
     date: Date;
     excerpt: string;
-    linkedinUrl: string;
+    linkedinUrl?: string;
     bodyHtml: string;
 };
 
@@ -83,7 +83,7 @@ const projectCards = projects
 await emit(
     "projects/index.html",
     renderLayout(
-        "Projects — Ale Bles",
+        "Projects · Ale Bles",
         inject(projectsTpl, "<!--PROJECT_CARDS-->", projectCards),
     ),
 );
@@ -101,7 +101,7 @@ const posts: Post[] = await Promise.all(
             title: data.title as string,
             date: new Date(data.date as string),
             excerpt: data.excerpt as string,
-            linkedinUrl: data.linkedinUrl as string,
+            linkedinUrl: data.linkedinUrl as string | undefined,
             bodyHtml,
         };
     }),
@@ -112,34 +112,38 @@ const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 
 const blogTpl = await Bun.file(join(SRC, "pages/blog.html")).text();
 const postCards = posts
-    .map(
-        (p) => `<div class="card">
+    .map((p) => {
+        const external = Boolean(p.linkedinUrl);
+        const href = p.linkedinUrl ?? `/blog/${p.slug}/`;
+        const linkAttrs = external ? ` target="_blank" rel="noopener"` : "";
+        const readMoreLabel = external ? "Read on LinkedIn →" : "Read post →";
+        return `<div class="card">
     <div class="meta">${fmtDate(p.date)}</div>
-    <h3><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h3>
+    <h3><a href="${escapeHtml(href)}"${linkAttrs}>${escapeHtml(p.title)}</a></h3>
     <p>${escapeHtml(p.excerpt)}</p>
-    <p><a class="read-more" href="${escapeHtml(p.linkedinUrl)}" target="_blank" rel="noopener">Read on LinkedIn →</a></p>
-</div>`,
-    )
+    <p><a class="read-more" href="${escapeHtml(href)}"${linkAttrs}>${readMoreLabel}</a></p>
+</div>`;
+    })
     .join("\n");
 await emit(
     "blog/index.html",
     renderLayout(
-        "Blog — Ale Bles",
+        "Blog · Ale Bles",
         inject(blogTpl, "<!--POST_CARDS-->", postCards),
     ),
 );
 
 const postTpl = await Bun.file(join(SRC, "pages/post.html")).text();
-for (const p of posts) {
+const localPosts = posts.filter((p) => !p.linkedinUrl);
+for (const p of localPosts) {
     const body = [
         ["<!--POST_TITLE-->", escapeHtml(p.title)],
         ["<!--POST_DATE-->", fmtDate(p.date)],
         ["<!--POST_BODY-->", p.bodyHtml],
-        ["<!--POST_LINKEDIN_URL-->", escapeHtml(p.linkedinUrl)],
     ].reduce((acc, [needle, value]) => inject(acc, needle, value), postTpl);
     await emit(
         `blog/${p.slug}/index.html`,
-        renderLayout(`${p.title} — Ale Bles`, body),
+        renderLayout(`${p.title} · Ale Bles`, body),
     );
 }
 

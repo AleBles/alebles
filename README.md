@@ -14,20 +14,20 @@ Source for the static site at **[ale.bles.nu](https://ale.bles.nu)**. The GitHub
 
 ```bash
 bun install
-bun run preview   # build + serve dist/ at http://localhost:3000
-bun run build     # just build
+bun run preview   # build, serve dist/ at http://localhost:3000, rebuild on src/ changes
+bun run build     # one-shot build
 ```
 
 ## Authoring
 
-- **Projects** — edit `src/content/projects.json`.
-- **Blog posts** — add markdown files under `src/content/posts/` with frontmatter:
+- **Projects**: edit `src/content/projects.json`.
+- **Blog posts**: add markdown files under `src/content/posts/` with frontmatter:
   ```yaml
   ---
   title: "..."
   date: 2026-04-18
-  linkedinUrl: https://www.linkedin.com/posts/...
   excerpt: "One-paragraph teaser shown on the blog index."
+  linkedinUrl: https://www.linkedin.com/posts/...   # optional; when present, adds "Read on LinkedIn" link
   ---
   ```
 

@@ -1,7 +1,7 @@
 [
   {
-    "name": "ImproveDigital App SDK",
-    "description": "Native Android and iOS SDK for integrating Improve Digital's ad stack into mobile apps.",
+    "name": "ImproveDigital Mobile Ads SDK",
+    "description": "Full stack Advertising platform with Admin Console, Ad Exchange, Native Android and iOS SDK for integrating Improve Digital's ad stack into mobile apps.",
     "url": "https://docs.app.improvedigital.com/",
     "tags": ["SDK", "Android", "iOS", "Advertising"]
   },
