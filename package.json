@@ -1,0 +1,14 @@
+{
+  "name": "alebles-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "preview": "bun run build && bun scripts/serve.ts",
+    "dev": "bun --watch scripts/build.ts"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^14.1.3"
+  }
+}
