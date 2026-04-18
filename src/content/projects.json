@@ -1,9 +1,9 @@
 [
   {
-    "name": "Azerion Ads SDK",
-    "description": "Ad integration SDK used across HTML5 games shipped through the Azerion network.",
-    "url": "https://www.azerion.com/",
-    "tags": ["SDK", "HTML5", "Advertising"]
+    "name": "ImproveDigital App SDK",
+    "description": "Native Android and iOS SDK for integrating Improve Digital's ad stack into mobile apps.",
+    "url": "https://docs.app.improvedigital.com/",
+    "tags": ["SDK", "Android", "iOS", "Advertising"]
   },
   {
     "name": "Personal site (this one)",
