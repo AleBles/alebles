@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects · Ale Bles</title>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="761fd2a6-b611-4718-9f7a-1e589fbfc703"></script>
     <style>
         * {
             margin: 0;
@@ -471,6 +472,80 @@
             font-size: 0.9em;
         }
 
+        .sticky-intro {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #fff;
+            padding: 4px 0 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sticky-intro h2 {
+            margin-bottom: 12px;
+        }
+
+        .sticky-intro p {
+            margin-bottom: 10px;
+        }
+
+        .sticky-intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        .muted {
+            color: #888;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .empty {
+            color: #888;
+            font-style: italic;
+            padding: 16px 0;
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .skill-group {
+            background: #f9f9fb;
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+
+        .skill-group h4 {
+            margin: 0 0 8px;
+            color: #2c3e50;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-group ul {
+            list-style: disc;
+            padding: 0 0 0 18px;
+            margin: 0;
+        }
+
+        .skill-group li {
+            color: #555;
+            font-size: 0.9em;
+            padding: 2px 0;
+            line-height: 1.45;
+        }
+
+        .skill-group li::marker {
+            color: #667eea;
+        }
+
         .score {
             display: none;
         }
@@ -536,6 +611,12 @@
                             <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Zm0 3.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z"/>
                         </svg>
                         <span>Blog</span>
+                    </a>
+                    <a href="/homelab/" class="nav-btn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v2.5A1.75 1.75 0 0 1 14.25 7H1.75A1.75 1.75 0 0 1 0 5.25v-2.5C0 1.784.784 1 1.75 1Zm-.25 1.75v2.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm.25 5.75h12.5c.966 0 1.75.784 1.75 1.75v2.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-2.5c0-.966.784-1.75 1.75-1.75Zm-.25 1.75v2.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25ZM7 4.75A.75.75 0 0 1 7.75 4h3.5a.75.75 0 0 1 0 1.5h-3.5A.75.75 0 0 1 7 4.75ZM7.75 11h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5ZM3 4.75a.75.75 0 0 1 1.5 0 .75.75 0 0 1-1.5 0ZM3.75 11a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"/>
+                        </svg>
+                        <span>Homelab</span>
                     </a>
                 </nav>
                 <div class="profile-links">

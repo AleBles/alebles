@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello world: new personal site is live · Ale Bles</title>
+    <title>Homelab · Ale Bles</title>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="761fd2a6-b611-4718-9f7a-1e589fbfc703"></script>
     <style>
         * {
@@ -650,20 +650,17 @@
                 </a>
             </nav>
             <div class="content">
-                <a class="back-link" href="/blog/">← Back to blog</a>
-<article class="post-article">
-    <h2>Hello world: new personal site is live</h2>
-    <div class="meta">2026-04-18</div>
-    <p>Just pushed the first version of my new personal site at <strong>ale.bles.nu</strong>.</p>
-<p>A few notes on the setup:</p>
-<ul>
-<li><strong>Bun</strong> as the build runtime: no framework, just a small TypeScript script that stitches templates together.</li>
-<li><strong>GitHub Actions</strong> builds on every push to the <code>site</code> branch and deploys <code>dist/</code> to <code>gh-pages</code>.</li>
-<li>Blog posts live as markdown in the repo. Each post mirrors something I&#39;ve already shared on LinkedIn, with a link back to the original thread.</li>
-</ul>
-<p>Keeping the build boring on purpose: less to break, less to maintain, more time to actually write things.</p>
+                <div class="sticky-intro">
+    <h2>Homelab</h2>
+    <p>Self-hosted, privacy-first home infrastructure. A low-power x86 server and NAS run everything on the local network; management is web-UI first, data stays on hardware I own.</p>
+    <p><strong>Running:</strong> ad-blocking DNS, VPN, reverse proxy with TLS. Home Assistant with fully local voice (STT/TTS), Z-Wave, MQTT. Local LLM for natural-language home queries. Self-hosted photos and media. IP cameras with on-device object detection. Stack-wide monitoring and alerts.</p>
+    <p class="muted">Local-first. If it can run at home, it does. Maintainable by one person, resilient enough to be boring, private by default.</p>
+</div>
 
-</article>
+<h3>Homelab posts</h3>
+<div class="card-list">
+<p class="empty">No homelab posts yet.</p>
+</div>
 
             </div>
         </div>
