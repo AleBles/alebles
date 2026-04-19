@@ -1,0 +1,55 @@
+name: Sync profile README
+
+on:
+  push:
+    branches: [site]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-readme
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site branch
+        uses: actions/checkout@v4
+        with:
+          ref: site
+          path: site
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+        working-directory: site
+
+      - name: Render README
+        working-directory: site
+        run: bun scripts/render-readme.ts > /tmp/README.md
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit updated README if changed
+        working-directory: main
+        run: |
+          cp /tmp/README.md README.md
+          if git diff --quiet README.md; then
+            echo "README already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Sync profile README from site skills"
+          git push origin main

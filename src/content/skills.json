@@ -1,0 +1,59 @@
+[
+  {
+    "title": "Languages",
+    "items": [
+      "TypeScript / JavaScript (React, Node)",
+      "PHP",
+      "Java / Kotlin",
+      "Bash",
+      "Python",
+      "C# (Unity)",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Mobile & SDKs",
+    "items": [
+      "Android and iOS SDK integration",
+      "ReactNative / Flutter / Unity integrations",
+      "Ad-tech stacks, in-app bidding",
+      "oRTB, VAST, MRAID",
+      "GDPR, GPP, COPPA",
+      "Creative QA tooling"
+    ]
+  },
+  {
+    "title": "Soft & mgmt",
+    "items": [
+      "Team leadership and line management",
+      "Code review and mentorship",
+      "Cross-team collaboration and roadmapping",
+      "Incident response and postmortems"
+    ]
+  },
+  {
+    "title": "Platform & ops",
+    "items": [
+      "AWS (EKS, ECR, Lambda, core services)",
+      "Docker, Kubernetes",
+      "Teamcity, GitLab CI, Terraform"
+    ]
+  },
+  {
+    "title": "Interests",
+    "items": [
+      "Retro gaming and arcade-style HTML5 side projects",
+      "Self-hosting and homelab tinkering",
+      "Local-first, privacy-first software",
+      "Home automation and on-prem LLMs",
+      "Open source"
+    ]
+  },
+  {
+    "title": "Game dev",
+    "items": [
+      "HTML5: Phaser, Pixi, CreateJS",
+      "Unity 3D"
+    ]
+  }
+]

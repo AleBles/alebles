@@ -20,6 +20,7 @@ type Post = {
     date: Date;
     excerpt: string;
     linkedinUrl?: string;
+    tags: string[];
     bodyHtml: string;
 };
 
@@ -58,8 +59,26 @@ async function emit(relativePath: string, html: string): Promise<void> {
 await rm(DIST, { recursive: true, force: true });
 await mkdir(DIST, { recursive: true });
 
+type SkillGroup = { title: string; items: string[] };
+
+const skills: SkillGroup[] = JSON.parse(
+    await Bun.file(join(SRC, "content/skills.json")).text(),
+);
+const skillCards = skills
+    .map(
+        (g) => `    <div class="skill-group">
+        <h4>${escapeHtml(g.title)}</h4>
+        <ul>
+${g.items.map((i) => `            <li>${escapeHtml(i)}</li>`).join("\n")}
+        </ul>
+    </div>`,
+    )
+    .join("\n");
 const home = await Bun.file(join(SRC, "pages/home.html")).text();
-await emit("index.html", renderLayout("Ale Bles", home));
+await emit(
+    "index.html",
+    renderLayout("Ale Bles", inject(home, "<!--SKILLS-->", skillCards)),
+);
 
 const projectsTpl = await Bun.file(join(SRC, "pages/projects.html")).text();
 const projects: Project[] = JSON.parse(
@@ -96,12 +115,17 @@ const posts: Post[] = await Promise.all(
         const { data, content } = matter(raw);
         const slug = slugify((data.slug as string | undefined) ?? file);
         const bodyHtml = await marked.parse(content);
+        const rawTags = data.tags;
+        const tags = Array.isArray(rawTags)
+            ? rawTags.map((t) => String(t).toLowerCase())
+            : [];
         return {
             slug,
             title: data.title as string,
             date: new Date(data.date as string),
             excerpt: data.excerpt as string,
             linkedinUrl: data.linkedinUrl as string | undefined,
+            tags,
             bodyHtml,
         };
     }),
@@ -110,26 +134,39 @@ posts.sort((a, b) => b.date.getTime() - a.date.getTime());
 
 const fmtDate = (d: Date) => d.toISOString().slice(0, 10);
 
-const blogTpl = await Bun.file(join(SRC, "pages/blog.html")).text();
-const postCards = posts
-    .map((p) => {
-        const external = Boolean(p.linkedinUrl);
-        const href = p.linkedinUrl ?? `/blog/${p.slug}/`;
-        const linkAttrs = external ? ` target="_blank" rel="noopener"` : "";
-        const readMoreLabel = external ? "Read on LinkedIn →" : "Read post →";
-        return `<div class="card">
+function renderPostCard(p: Post): string {
+    const external = Boolean(p.linkedinUrl);
+    const href = p.linkedinUrl ?? `/blog/${p.slug}/`;
+    const linkAttrs = external ? ` target="_blank" rel="noopener"` : "";
+    const readMoreLabel = external ? "Read on LinkedIn →" : "Read post →";
+    return `<div class="card">
     <div class="meta">${fmtDate(p.date)}</div>
     <h3><a href="${escapeHtml(href)}"${linkAttrs}>${escapeHtml(p.title)}</a></h3>
     <p>${escapeHtml(p.excerpt)}</p>
     <p><a class="read-more" href="${escapeHtml(href)}"${linkAttrs}>${readMoreLabel}</a></p>
 </div>`;
-    })
-    .join("\n");
+}
+
+function renderPostCards(list: Post[], emptyMsg: string): string {
+    return list.length ? list.map(renderPostCard).join("\n") : `<p class="empty">${emptyMsg}</p>`;
+}
+
+const blogTpl = await Bun.file(join(SRC, "pages/blog.html")).text();
 await emit(
     "blog/index.html",
     renderLayout(
         "Blog · Ale Bles",
-        inject(blogTpl, "<!--POST_CARDS-->", postCards),
+        inject(blogTpl, "<!--POST_CARDS-->", renderPostCards(posts, "No posts yet.")),
+    ),
+);
+
+const homelabTpl = await Bun.file(join(SRC, "pages/homelab.html")).text();
+const homelabPosts = posts.filter((p) => p.tags.includes("homelab"));
+await emit(
+    "homelab/index.html",
+    renderLayout(
+        "Homelab · Ale Bles",
+        inject(homelabTpl, "<!--HOMELAB_POSTS-->", renderPostCards(homelabPosts, "No homelab posts yet.")),
     ),
 );
 
@@ -153,5 +190,5 @@ await Bun.write(
 );
 
 console.log(
-    `Built ${posts.length} post${posts.length === 1 ? "" : "s"} + home/projects/blog → ${DIST}`,
+    `Built ${posts.length} post${posts.length === 1 ? "" : "s"} + home/projects/blog/homelab → ${DIST}`,
 );

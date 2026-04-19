@@ -5,6 +5,23 @@ All notable changes to the site source will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-04-19
+
+### Added
+- `/homelab/` page with a sticky intro block (local-first framing + stack summary) and a tag-filtered post list below.
+- Homelab nav button in the menu (octicons server icon).
+- Optional `tags` array in post frontmatter. Posts with `tags: [homelab]` surface on the homelab page, newest first.
+- `.sticky-intro`, `.muted`, and `.empty` CSS helpers on the layout for the new page.
+- Umami analytics tracker (`cloud.umami.is`) in the layout `<head>`, loaded with `defer` on every built page.
+- Skills section on the home page with six grouped cards (Languages, Game dev, Mobile & SDKs, Platform & ops, Soft & mgmt, Interests). Content informed by GitLab language distribution and LinkedIn profile; no internal project names exposed.
+- `.skills` / `.skill-group` CSS for the new section (auto-fit grid, same card treatment as project cards). Lists render with visible accent-coloured bullets.
+- `src/content/skills.json` as the single source of truth for skill groups. Home page renders from this JSON via a `<!--SKILLS-->` slot in `src/pages/home.html`.
+- `scripts/render-readme.ts`: renders a profile README markdown from `skills.json` plus a short intro. Prints to stdout or a given path.
+- `.github/workflows/sync-readme.yml`: on every push to `site`, regenerates the profile README and commits it to `main` if it changed. Uses the default `GITHUB_TOKEN`; skips commits when there's no diff.
+
+### Changed
+- Post-card rendering factored into `renderPostCard` / `renderPostCards(list, emptyMsg)` in `scripts/build.ts` so blog index and homelab share identical markup. Empty lists render a `.empty` message instead of nothing.
+
 ## [0.3.0] - 2026-04-18
 
 ### Added
