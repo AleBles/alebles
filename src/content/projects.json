@@ -1,14 +1,52 @@
 [
   {
+    "name": "skald",
+    "description": "AI voice narrator for repo activity. Polls GitHub or GitLab feeds and narrates pushes, merges, releases, and pipelines like a live commentator over your speakers. Ink terminal dashboard, pluggable LLM and TTS backends, local or cloud.",
+    "site": "https://skald.bles.nu",
+    "github": "https://github.com/AleBles/skald",
+    "tags": [
+      "Bun",
+      "TypeScript",
+      "CLI",
+      "AI",
+      "TTS"
+    ],
+    "image": "/assets/projects/skald.png",
+    "imageAlt": "skald wordmark"
+  },
+  {
+    "name": "Workspace OSD Flash",
+    "description": "DankMaterialShell daemon plugin that briefly shows the id and name of the workspace you just switched to, centered on that screen, with the windows open there. Per monitor, click-through, themed like DMS's own OSDs. Hyprland, niri, and Mango.",
+    "github": "https://github.com/AleBles/dms-workspace-osd",
+    "tags": [
+      "QML",
+      "Quickshell",
+      "DankMaterialShell",
+      "Wayland",
+      "Linux"
+    ],
+    "image": "/assets/projects/workspace-osd.png",
+    "imageAlt": "Workspace OSD card showing workspace 3 and its open windows"
+  },
+  {
     "name": "ImproveDigital Mobile Ads SDK",
     "description": "Full stack Advertising platform with Admin Console, Ad Exchange, Native Android and iOS SDK for integrating Improve Digital's ad stack into mobile apps.",
-    "url": "https://docs.app.improvedigital.com/",
-    "tags": ["SDK", "Android", "iOS", "Advertising"]
+    "site": "https://docs.app.improvedigital.com/",
+    "tags": [
+      "SDK",
+      "Android",
+      "iOS",
+      "Advertising"
+    ]
   },
   {
     "name": "Personal site (this one)",
     "description": "Static site built with a bare Bun build pipeline, deployed to GitHub Pages.",
-    "url": "https://github.com/AleBles/alebles",
-    "tags": ["Bun", "TypeScript", "GitHub Pages"]
+    "github": "https://github.com/AleBles/alebles",
+    "tags": [
+      "Bun",
+      "TypeScript",
+      "GitHub Pages"
+    ]
   }
 ]

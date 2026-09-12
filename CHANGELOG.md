@@ -5,6 +5,36 @@ All notable changes to the site source will be documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-09-12
+
+Synthwave redesign with terminal accents.
+
+### Added
+- Static assets in `src/assets/` (stylesheet, Snake script, favicon, project images), copied to `dist/assets/` by the build.
+- Design tokens as CSS custom properties. The Snake canvas reads its colours from them.
+- Pure CSS synthwave backdrop: horizon, sun, scrolling perspective grid, scanlines.
+- Top nav with active page state, set at build time.
+- Meta description, Open Graph tags, canonical URL, theme colour, and favicon on every page.
+- Skip link, focus ring, and reduced-motion support (no animations, Snake shows a still frame).
+- Snake pauses while the tab is hidden.
+- Footer with social and source links.
+- Projects: skald and Workspace OSD Flash.
+- Project cards support `site` and `github` links with icons, and an optional header image.
+
+### Changed
+- Single centred column instead of header plus sidebar: top bar, hero window with profile and Snake, content panel, footer.
+- Dark palette throughout: cyan, magenta, purple, amber on deep navy. Snake recoloured to match.
+- Section headings render as `> heading` prompts.
+- Projects page uses a two-column grid, one column on small screens.
+- System monospace font stack instead of Courier New.
+- `renderLayout` takes `{ title, description, path, page }`; `inject` fills every occurrence of a slot.
+- Home page copy no longer mentions the Nokia Snake.
+- README: preview port fixed, `tags` documented, styling section added.
+
+### Removed
+- Inline CSS and JS from the layout.
+- Sidebar, fake repo and follower stats, nav icons, Nokia LCD and CRT header styling, "Website" self link.
+
 ## [0.4.0] - 2026-04-19
 
 ### Added
