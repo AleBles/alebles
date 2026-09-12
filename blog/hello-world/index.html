@@ -4,653 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello world: new personal site is live · Ale Bles</title>
+    <meta name="description" content="Spun up a static site at ale.bles.nu with a bare Bun build and GitHub Actions deploy. Short post on why I kept it framework-free.">
+    <meta name="theme-color" content="#0b0a1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ale.bles.nu">
+    <meta property="og:title" content="Hello world: new personal site is live · Ale Bles">
+    <meta property="og:description" content="Spun up a static site at ale.bles.nu with a bare Bun build and GitHub Actions deploy. Short post on why I kept it framework-free.">
+    <meta property="og:url" content="https://ale.bles.nu/blog/hello-world/">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://ale.bles.nu/blog/hello-world/">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles.css">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="761fd2a6-b611-4718-9f7a-1e589fbfc703"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: #f5f5f5;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 0;
-            display: grid;
-            grid-template-columns: 240px 1fr;
-            align-items: stretch;
-        }
-
-        .snake-container {
-            background: #9cb895;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .nokia-frame {
-            background: #2c3e50;
-            padding: 8px;
-            border-radius: 4px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .nokia-frame::after {
-            content: '';
-            position: absolute;
-            inset: 10px;
-            pointer-events: none;
-            background:
-                radial-gradient(
-                    ellipse at 50% 35%,
-                    rgba(255, 255, 255, 0.12) 0%,
-                    rgba(255, 255, 255, 0) 55%
-                ),
-                radial-gradient(
-                    ellipse at center,
-                    rgba(0, 0, 0, 0) 55%,
-                    rgba(0, 0, 0, 0.35) 100%
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.07) 0,
-                    rgba(0, 0, 0, 0.07) 1px,
-                    transparent 1px,
-                    transparent 2px
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(0, 0, 0, 0.05) 0,
-                    rgba(0, 0, 0, 0.05) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
-            mix-blend-mode: multiply;
-            border-radius: 1px;
-        }
-
-        #snakeCanvas {
-            display: block;
-            background: #9cb895;
-            border: 2px solid #2c3e50;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            filter: contrast(1.06) saturate(0.92);
-        }
-
-        .header-content {
-            padding: 22px 28px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: #0a0e10;
-            color: #5ad16a;
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                inset 0 0 60px rgba(90, 209, 106, 0.08),
-                inset 0 0 0 1px #1a1f22;
-        }
-
-        .header-content::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.18),
-                rgba(0, 0, 0, 0.18) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .header-content::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(
-                ellipse at center,
-                transparent 55%,
-                rgba(0, 0, 0, 0.35) 100%
-            );
-            pointer-events: none;
-        }
-
-        .header-content > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .header-content h1 {
-            font-family: 'Courier New', 'Monaco', monospace;
-            font-size: 1.9em;
-            margin-bottom: 8px;
-            letter-spacing: 0;
-            font-weight: normal;
-            color: #5ad16a;
-            text-shadow: 0 0 6px rgba(90, 209, 106, 0.55);
-        }
-
-        .header-content h1 .cursor {
-            display: inline-block;
-            margin-left: 2px;
-            color: #5ad16a;
-            animation: blink 1s steps(1) infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        .header-content p {
-            color: #3d8b49;
-            font-size: 0.9em;
-            font-family: 'Courier New', 'Monaco', monospace;
-            text-shadow: 0 0 4px rgba(61, 139, 73, 0.4);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 240px 1fr;
-            min-height: 500px;
-        }
-
-        .menu {
-            background: #34495e;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #2c3e50;
-        }
-
-        .profile-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #667eea;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            text-align: center;
-        }
-
-        .profile-info h3 {
-            color: #ecf0f1;
-            font-size: 1em;
-            margin-bottom: 4px;
-        }
-
-        .profile-role {
-            color: #bdc3c7;
-            font-size: 0.8em;
-            margin-bottom: 2px;
-        }
-
-        .profile-subtitle {
-            color: #95a5a6;
-            font-size: 0.75em;
-        }
-
-        .profile-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            width: 100%;
-            padding: 12px 0;
-            border-bottom: 1px solid #2c3e50;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .stat-value {
-            color: #ecf0f1;
-            font-size: 1.3em;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            color: #95a5a6;
-            font-size: 0.75em;
-            text-transform: uppercase;
-        }
-
-        .profile-links {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #2c3e50;
-        }
-
-        .profile-links a {
-            color: #bdc3c7;
-            transition: all 0.3s ease;
-            padding: 6px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-links a:hover {
-            color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .profile-location,
-        .profile-company {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #95a5a6;
-            font-size: 0.85em;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .profile-location:hover,
-        .profile-company:hover {
-            color: #667eea;
-        }
-
-        .profile-location svg,
-        .profile-company svg {
-            flex-shrink: 0;
-        }
-
-        .nav-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #2c3e50;
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            color: #ecf0f1;
-            text-decoration: none;
-            background: #2c3e50;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-        }
-
-        .nav-btn:hover {
-            background: #667eea;
-            transform: translateX(4px);
-        }
-
-        .nav-btn svg {
-            flex-shrink: 0;
-        }
-
-        .menu a {
-            text-decoration: none;
-        }
-
-        .content {
-            padding: 40px;
-            background: #fff;
-        }
-
-        .content h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
-
-        .content p {
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 15px;
-        }
-
-        .content a {
-            color: #667eea;
-            text-decoration: none;
-            border-bottom: 1px dashed #667eea;
-            transition: all 0.2s ease;
-        }
-
-        .content a:hover {
-            color: #764ba2;
-            border-bottom-color: #764ba2;
-        }
-
-        .content h3 {
-            color: #2c3e50;
-            margin: 20px 0 8px;
-            font-size: 1.2em;
-        }
-
-        .card-list {
-            display: grid;
-            gap: 16px;
-            margin-top: 8px;
-        }
-
-        .card {
-            background: #f9f9fb;
-            border: 1px solid #e5e7eb;
-            border-left: 4px solid #667eea;
-            border-radius: 6px;
-            padding: 16px 18px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
-        }
-
-        .card h3 {
-            margin: 0 0 6px;
-        }
-
-        .card p {
-            margin-bottom: 8px;
-        }
-
-        .card .meta {
-            color: #888;
-            font-size: 0.85em;
-            margin-bottom: 4px;
-        }
-
-        .card .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
-        }
-
-        .card .tag {
-            background: #667eea;
-            color: #fff;
-            font-size: 0.75em;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .read-more {
-            display: inline-block;
-            margin-top: 6px;
-            font-weight: bold;
-        }
-
-        .post-article .meta {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 16px;
-        }
-
-        .post-article pre {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 12px;
-            border-radius: 4px;
-            overflow-x: auto;
-            font-size: 0.85em;
-            margin: 12px 0;
-        }
-
-        .post-article code {
-            background: #eef0f3;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 0.9em;
-        }
-
-        .post-article pre code {
-            background: none;
-            padding: 0;
-        }
-
-        .post-article ul,
-        .post-article ol {
-            margin: 8px 0 16px 24px;
-            color: #555;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 16px;
-            font-size: 0.9em;
-        }
-
-        .sticky-intro {
-            position: sticky;
-            top: 0;
-            z-index: 5;
-            background: #fff;
-            padding: 4px 0 16px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .sticky-intro h2 {
-            margin-bottom: 12px;
-        }
-
-        .sticky-intro p {
-            margin-bottom: 10px;
-        }
-
-        .sticky-intro p:last-child {
-            margin-bottom: 0;
-        }
-
-        .muted {
-            color: #888;
-            font-style: italic;
-            font-size: 0.9em;
-        }
-
-        .empty {
-            color: #888;
-            font-style: italic;
-            padding: 16px 0;
-        }
-
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .skill-group {
-            background: #f9f9fb;
-            border: 1px solid #e5e7eb;
-            border-left: 4px solid #667eea;
-            border-radius: 6px;
-            padding: 14px 16px;
-        }
-
-        .skill-group h4 {
-            margin: 0 0 8px;
-            color: #2c3e50;
-            font-size: 0.95em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .skill-group ul {
-            list-style: disc;
-            padding: 0 0 0 18px;
-            margin: 0;
-        }
-
-        .skill-group li {
-            color: #555;
-            font-size: 0.9em;
-            padding: 2px 0;
-            line-height: 1.45;
-        }
-
-        .skill-group li::marker {
-            color: #667eea;
-        }
-
-        .score {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .header,
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="snake-container">
-                <div class="nokia-frame">
-                    <canvas id="snakeCanvas" width="140" height="140"></canvas>
+<body data-page="blog">
+    <div class="backdrop" aria-hidden="true">
+        <div class="backdrop__glow"></div>
+        <div class="backdrop__sun"></div>
+        <div class="backdrop__grid"></div>
+    </div>
+    <a class="skip-link" href="#main">skip to content</a>
+
+    <header class="topbar">
+        <a class="brand" href="/">ale@bles.nu<span class="brand__path">:~$</span><span class="cursor">_</span></a>
+        <nav class="topnav" aria-label="Primary">
+            <a href="/" data-nav="home">home</a>
+            <a href="/projects/" data-nav="projects">projects</a>
+            <a href="/blog/" data-nav="blog" class="active" aria-current="page">blog</a>
+            <a href="/homelab/" data-nav="homelab">homelab</a>
+        </nav>
+    </header>
+
+    <div class="page">
+        <section class="hero surface window" aria-label="Profile">
+            <div class="window__bar">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span class="window__title">~/ale-bles</span>
+            </div>
+            <div class="hero__body">
+                <div class="hero__profile">
+                    <img class="avatar" src="https://avatars.githubusercontent.com/u/3883477?v=4" alt="Ale Bles" width="72" height="72">
+                    <div>
+                        <h1>ale bles<span class="cursor">_</span></h1>
+                        <p class="hero__role">SDK Development Manager at Azerion. HTML5 games. Occasional blog.</p>
+                        <ul class="hero__meta">
+                            <li>
+                                <a href="https://maps.app.goo.gl/M552Yg7c56PEWufy9" target="_blank" rel="noopener">
+                                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                        <path d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.072v.001zm1.06 8.132a6.5 6.5 0 10-9.192 0l3.535 3.536a1.5 1.5 0 002.122 0l3.535-3.536zM8 9a2 2 0 100-4 2 2 0 000 4z"/>
+                                    </svg>
+                                    <span>Amsterdam / Almere</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.azerion.com" target="_blank" rel="noopener">
+                                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                        <path d="M1.75 16A1.75 1.75 0 010 14.25V1.75C0 .784.784 0 1.75 0h8.5C11.216 0 12 .784 12 1.75v12.5c0 .085-.006.168-.018.25h2.268a.25.25 0 00.25-.25V8.285a.25.25 0 00-.111-.208l-1.055-.703a.75.75 0 11.832-1.248l1.055.703c.487.325.779.871.779 1.456v5.965A1.75 1.75 0 0114.25 16h-3.5a.75.75 0 01-.197-.026c-.099.017-.2.026-.303.026h-3a.75.75 0 01-.75-.75V14h-1v1.25a.75.75 0 01-.75.75h-3zM1.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.25.25 0 00.25-.25v-12.5a.25.25 0 00-.25-.25h-2.5zm4.5 0a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.25.25 0 00.25-.25v-12.5a.25.25 0 00-.25-.25h-2.5z"/>
+                                    </svg>
+                                    <span>@azerion</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/AleBles" target="_blank" rel="noopener">
+                                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                                    </svg>
+                                    <span>github</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/in/alebles/" target="_blank" rel="noopener">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                    <span>linkedin</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hero__snake">
+                    <canvas id="snakeCanvas" width="140" height="140" role="img" aria-label="Self-playing Snake"></canvas>
                 </div>
             </div>
-            <div class="header-content">
-                <h1>&gt; ale bles<span class="cursor">_</span></h1>
-                <p>SDK engineering at Azerion. HTML5 games. Occasional blog.</p>
-            </div>
-        </div>
-        <div class="main-content">
-            <nav class="menu">
-                <div class="profile-section">
-                    <div class="profile-avatar">
-                        <img src="https://avatars.githubusercontent.com/u/3883477?v=4" alt="Ale Bles">
-                    </div>
-                    <div class="profile-info">
-                        <h3>Ale Bles</h3>
-                        <p class="profile-role">SDK Development Manager</p>
-                        <p class="profile-subtitle">HTML5 Game Enthusiast</p>
-                    </div>
-                </div>
-                <div class="profile-stats">
-                    <div class="stat">
-                        <span class="stat-value">25</span>
-                        <span class="stat-label">Repos</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value">52</span>
-                        <span class="stat-label">Followers</span>
-                    </div>
-                </div>
-                <nav class="nav-buttons">
-                    <a href="/" class="nav-btn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.438 1.157a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"/>
-                        </svg>
-                        <span>Home</span>
-                    </a>
-                    <a href="/projects/" class="nav-btn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M1.75 2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.75a.25.25 0 0 0-.25-.25H7.5a.75.75 0 0 1-.6-.3L5.65 3.5H1.75Zm-1.75.25C0 1.784.784 1 1.75 1h4.146c.53 0 1.028.25 1.345.676l.941 1.324h6.068c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25V2.75Z"/>
-                        </svg>
-                        <span>Projects</span>
-                    </a>
-                    <a href="/blog/" class="nav-btn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM3.5 6.25a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1-.75-.75Zm.75 2.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Zm0 3.25h4a.75.75 0 0 1 0 1.5h-4a.75.75 0 0 1 0-1.5Z"/>
-                        </svg>
-                        <span>Blog</span>
-                    </a>
-                    <a href="/homelab/" class="nav-btn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v2.5A1.75 1.75 0 0 1 14.25 7H1.75A1.75 1.75 0 0 1 0 5.25v-2.5C0 1.784.784 1 1.75 1Zm-.25 1.75v2.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm.25 5.75h12.5c.966 0 1.75.784 1.75 1.75v2.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-2.5c0-.966.784-1.75 1.75-1.75Zm-.25 1.75v2.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-2.5a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25ZM7 4.75A.75.75 0 0 1 7.75 4h3.5a.75.75 0 0 1 0 1.5h-3.5A.75.75 0 0 1 7 4.75ZM7.75 11h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5ZM3 4.75a.75.75 0 0 1 1.5 0 .75.75 0 0 1-1.5 0ZM3.75 11a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"/>
-                        </svg>
-                        <span>Homelab</span>
-                    </a>
-                </nav>
-                <div class="profile-links">
-                    <a href="https://github.com/AleBles" target="_blank" title="GitHub">
-                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/alebles/" target="_blank" title="LinkedIn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    <a href="https://ale.bles.nu" target="_blank" title="Website">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                        </svg>
-                    </a>
-                </div>
-                <a class="profile-location" href="https://maps.app.goo.gl/M552Yg7c56PEWufy9" target="_blank" rel="noopener">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M11.536 3.464a5 5 0 010 7.072L8 14.07l-3.536-3.535a5 5 0 117.072-7.072v.001zm1.06 8.132a6.5 6.5 0 10-9.192 0l3.535 3.536a1.5 1.5 0 002.122 0l3.535-3.536zM8 9a2 2 0 100-4 2 2 0 000 4z"/>
-                    </svg>
-                    <span>Amsterdam / Almere</span>
-                </a>
-                <a class="profile-company" href="https://www.azerion.com" target="_blank" rel="noopener">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M1.75 16A1.75 1.75 0 010 14.25V1.75C0 .784.784 0 1.75 0h8.5C11.216 0 12 .784 12 1.75v12.5c0 .085-.006.168-.018.25h2.268a.25.25 0 00.25-.25V8.285a.25.25 0 00-.111-.208l-1.055-.703a.75.75 0 11.832-1.248l1.055.703c.487.325.779.871.779 1.456v5.965A1.75 1.75 0 0114.25 16h-3.5a.75.75 0 01-.197-.026c-.099.017-.2.026-.303.026h-3a.75.75 0 01-.75-.75V14h-1v1.25a.75.75 0 01-.75.75h-3zM1.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.25.25 0 00.25-.25v-12.5a.25.25 0 00-.25-.25h-2.5zm4.5 0a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h2.5a.25.25 0 00.25-.25v-12.5a.25.25 0 00-.25-.25h-2.5z"/>
-                    </svg>
-                    <span>@azerion</span>
-                </a>
-            </nav>
-            <div class="content">
-                <a class="back-link" href="/blog/">← Back to blog</a>
+        </section>
+
+        <main id="main" class="content surface">
+            <a class="back-link" href="/blog/">← Back to blog</a>
 <article class="post-article">
     <h2>Hello world: new personal site is live</h2>
     <div class="meta">2026-04-18</div>
@@ -665,171 +105,18 @@
 
 </article>
 
-            </div>
-        </div>
+        </main>
+
+        <footer class="footer">
+            <p>
+                <a href="https://github.com/AleBles" target="_blank" rel="noopener">github</a>
+                ·
+                <a href="https://www.linkedin.com/in/alebles/" target="_blank" rel="noopener">linkedin</a>
+            </p>
+            <p>built with bun · <a href="https://github.com/AleBles/alebles" target="_blank" rel="noopener">source</a></p>
+        </footer>
     </div>
 
-    <script>
-        const canvas = document.getElementById('snakeCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        const gridSize = 10;
-        const tileCount = canvas.width / gridSize;
-        
-        let snake = [
-            {x: 7, y: 7},
-            {x: 6, y: 7},
-            {x: 5, y: 7}
-        ];
-        
-        let dx = 1;
-        let dy = 0;
-        let food = {x: 12, y: 12};
-        let score = 0;
-        let gameSpeed = 150;
-        
-        function drawGame() {
-            // Clear canvas
-            ctx.fillStyle = '#9cb895';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw grid (subtle)
-            ctx.strokeStyle = '#8aa884';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i <= tileCount; i++) {
-                ctx.beginPath();
-                ctx.moveTo(i * gridSize, 0);
-                ctx.lineTo(i * gridSize, canvas.height);
-                ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.moveTo(0, i * gridSize);
-                ctx.lineTo(canvas.width, i * gridSize);
-                ctx.stroke();
-            }
-            
-            // Draw score in pixel font style
-            ctx.fillStyle = '#2c3e50';
-            ctx.font = 'bold 8px "Courier New", monospace';
-            ctx.textAlign = 'right';
-            ctx.fillText(score.toString().padStart(3, '0'), canvas.width - 3, 8);
-            
-            // Draw food
-            ctx.fillStyle = '#2c3e50';
-            ctx.fillRect(food.x * gridSize + 1, food.y * gridSize + 1, gridSize - 2, gridSize - 2);
-            
-            // Draw snake
-            snake.forEach((segment, index) => {
-                ctx.fillStyle = index === 0 ? '#1a252f' : '#2c3e50';
-                ctx.fillRect(segment.x * gridSize + 1, segment.y * gridSize + 1, gridSize - 2, gridSize - 2);
-            });
-        }
-        
-        function updateGame() {
-            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-            
-            // Check wall collision - wrap around
-            if (head.x < 0) head.x = tileCount - 1;
-            if (head.x >= tileCount) head.x = 0;
-            if (head.y < 0) head.y = tileCount - 1;
-            if (head.y >= tileCount) head.y = 0;
-            
-            // Check self collision - restart game
-            for (let segment of snake) {
-                if (head.x === segment.x && head.y === segment.y) {
-                    resetGame();
-                    return;
-                }
-            }
-            
-            snake.unshift(head);
-            
-            // Check food collision
-            if (head.x === food.x && head.y === food.y) {
-                score += 10;
-                placeFood();
-                gameSpeed = Math.max(80, gameSpeed - 2);
-            } else {
-                snake.pop();
-            }
-            
-            // Simple AI - move towards food
-            const nextMove = getNextMove();
-            dx = nextMove.dx;
-            dy = nextMove.dy;
-        }
-        
-        function getNextMove() {
-            const head = snake[0];
-            const moves = [];
-            
-            // Try to move towards food
-            if (food.x > head.x && dx !== -1) moves.push({dx: 1, dy: 0, dist: Math.abs(food.x - head.x - 1) + Math.abs(food.y - head.y)});
-            if (food.x < head.x && dx !== 1) moves.push({dx: -1, dy: 0, dist: Math.abs(food.x - head.x + 1) + Math.abs(food.y - head.y)});
-            if (food.y > head.y && dy !== -1) moves.push({dx: 0, dy: 1, dist: Math.abs(food.x - head.x) + Math.abs(food.y - head.y - 1)});
-            if (food.y < head.y && dy !== 1) moves.push({dx: 0, dy: -1, dist: Math.abs(food.x - head.x) + Math.abs(food.y - head.y + 1)});
-            
-            // Filter out moves that would cause immediate collision
-            const safeMoves = moves.filter(move => {
-                const newHead = {
-                    x: (head.x + move.dx + tileCount) % tileCount,
-                    y: (head.y + move.dy + tileCount) % tileCount
-                };
-                return !snake.some((segment, i) => i > 0 && segment.x === newHead.x && segment.y === newHead.y);
-            });
-            
-            if (safeMoves.length > 0) {
-                safeMoves.sort((a, b) => a.dist - b.dist);
-                return safeMoves[0];
-            }
-            
-            // If no safe move towards food, try any safe move
-            const allMoves = [
-                {dx: 1, dy: 0}, {dx: -1, dy: 0}, {dx: 0, dy: 1}, {dx: 0, dy: -1}
-            ].filter(move => !(move.dx === -dx && move.dy === -dy));
-            
-            for (let move of allMoves) {
-                const newHead = {
-                    x: (head.x + move.dx + tileCount) % tileCount,
-                    y: (head.y + move.dy + tileCount) % tileCount
-                };
-                if (!snake.some((segment, i) => i > 0 && segment.x === newHead.x && segment.y === newHead.y)) {
-                    return move;
-                }
-            }
-            
-            return {dx, dy};
-        }
-        
-        function placeFood() {
-            do {
-                food.x = Math.floor(Math.random() * tileCount);
-                food.y = Math.floor(Math.random() * tileCount);
-            } while (snake.some(segment => segment.x === food.x && segment.y === food.y));
-        }
-        
-        function resetGame() {
-            snake = [
-                {x: 7, y: 7},
-                {x: 6, y: 7},
-                {x: 5, y: 7}
-            ];
-            dx = 1;
-            dy = 0;
-            score = 0;
-            gameSpeed = 150;
-            placeFood();
-        }
-        
-        function gameLoop() {
-            updateGame();
-            drawGame();
-            setTimeout(gameLoop, gameSpeed);
-        }
-        
-        // Start the game
-        placeFood();
-        gameLoop();
-    </script>
+    <script src="/assets/snake.js" defer></script>
 </body>
 </html>
