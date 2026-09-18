@@ -39,6 +39,9 @@
     --space-4: 24px;
     --space-5: 40px;
     --content-max: 880px;
+    /* Measured, per breakpoint: the bar wraps to two rows below 640px.
+       Used by .sticky-intro and :target so neither lands under it. */
+    --topbar-h: 67px;
 
     --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Fira Code", Menlo, Consolas, "Courier New", monospace;
     --scanline-opacity: 0.045;
@@ -57,6 +60,11 @@
 html {
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+}
+
+:target {
+    scroll-margin-top: calc(var(--topbar-h) + var(--space-3));
 }
 
 body {
@@ -191,7 +199,20 @@ body::after {
    Top bar
    -------------------------------------------------------------------------- */
 
+/* Sticky: it spans the full width so it can carry a background. Without one,
+   content scrolls underneath and the links become unreadable. z-index sits
+   below body::after (50) so the scanlines still run over the bar. */
 .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(11, 10, 26, 0.72);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar__inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -691,7 +712,7 @@ h3.prompt {
 
 .sticky-intro {
     position: sticky;
-    top: 0;
+    top: var(--topbar-h);
     z-index: 5;
     background: var(--surface-2);
     margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-4)) var(--space-4);
@@ -755,6 +776,10 @@ h3.prompt {
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
     .backdrop__grid,
     .cursor {
         animation: none;
@@ -775,6 +800,10 @@ h3.prompt {
 }
 
 @media (max-width: 640px) {
+    :root {
+        --topbar-h: 102px;
+    }
+
     .brand {
         flex-basis: 100%;
     }
@@ -818,6 +847,10 @@ h3.prompt {
 }
 
 @media (max-width: 420px) {
+    :root {
+        --topbar-h: 96px;
+    }
+
     .hero h1 {
         font-size: 1.4rem;
     }
