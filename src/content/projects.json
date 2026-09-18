@@ -1,5 +1,20 @@
 [
   {
+    "name": "dagr",
+    "description": "A tiny, keyboard-first task list for Linux. GTK 4 and libadwaita, one priority-ordered list, everything a single click away. A background service hosts an MCP endpoint so an AI assistant can do anything you can, and answers a Unix socket that a launcher plugin uses to add tasks from a spotlight search.",
+    "site": "https://dagr.bles.nu",
+    "github": "https://github.com/AleBles/dagr",
+    "tags": [
+      "Rust",
+      "GTK 4",
+      "libadwaita",
+      "MCP",
+      "Linux"
+    ],
+    "image": "/assets/projects/dagr.png",
+    "imageAlt": "dagr wordmark"
+  },
+  {
     "name": "skald",
     "description": "AI voice narrator for repo activity. Polls GitHub or GitLab feeds and narrates pushes, merges, releases, and pipelines like a live commentator over your speakers. Ink terminal dashboard, pluggable LLM and TTS backends, local or cloud.",
     "site": "https://skald.bles.nu",
