@@ -20,6 +20,9 @@ Synthwave redesign with terminal accents.
 - Footer with social and source links.
 - Projects: skald and Workspace OSD Flash.
 - Project cards support `site` and `github` links with icons, and an optional header image.
+- Profile README (on `main`) rebuilt from the same content as the site: banner, badges, terminal intro, project grid, latest posts, skills table, homelab blurb. Banner is an SVG served from the site at `/assets/readme/banner.svg`.
+- `bun run readme:preview` renders the profile README to `.preview/readme.html` with GitHub styling and local images.
+- `scripts/content.ts` with shared loaders for projects, posts, and skills, used by both the site build and the README renderer.
 
 ### Changed
 - Single centred column instead of header plus sidebar: top bar, hero window with profile and Snake, content panel, footer.

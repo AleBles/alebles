@@ -33,6 +33,10 @@ bun run build     # one-shot build
   ---
   ```
 
+## Profile README
+
+`scripts/render-readme.ts` renders the GitHub profile README from `projects.json`, the posts, and `skills.json`, so it stays in step with the site. The banner is `src/assets/readme/banner.svg`, served from `ale.bles.nu/assets/readme/banner.svg`. Preview locally with `bun run readme:preview` (after `bun run build`); it writes `.preview/readme.html` with GitHub styling and local images. `bun scripts/render-readme.ts` prints the raw markdown. The `sync-readme` workflow commits the result to `main` on every push to `site`.
+
 ## Deploy
 
 Push to `site` → GitHub Actions builds with Bun and publishes `dist/` to `gh-pages`. Custom domain (`ale.bles.nu`) is re-asserted via the workflow's `cname` input.

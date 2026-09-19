@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "bun scripts/build.ts",
-    "preview": "bun scripts/watch.ts"
+    "preview": "bun scripts/watch.ts",
+    "readme:preview": "bun scripts/preview-readme.ts"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

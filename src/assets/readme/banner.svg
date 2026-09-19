@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-label="ale bles, SDK Development Manager at Azerion">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0a1a"/>
+      <stop offset="0.5" stop-color="#1a1040"/>
+      <stop offset="0.68" stop-color="#2a0f4a"/>
+      <stop offset="1" stop-color="#0b0a1a"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb347"/>
+      <stop offset="0.55" stop-color="#ff4fd8"/>
+      <stop offset="1" stop-color="#9d6bff"/>
+    </linearGradient>
+    <radialGradient id="bloom">
+      <stop offset="0" stop-color="#ff4fd8" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ff4fd8" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="sunMask">
+      <circle cx="770" cy="150" r="82" fill="#fff"/>
+      <rect x="680" y="152" width="180" height="5" fill="#000"/>
+      <rect x="680" y="166" width="180" height="7" fill="#000"/>
+      <rect x="680" y="184" width="180" height="9" fill="#000"/>
+      <rect x="680" y="206" width="180" height="11" fill="#000"/>
+    </mask>
+    <clipPath id="floor"><rect x="0" y="172" width="960" height="88"/></clipPath>
+    <clipPath id="frame"><rect width="960" height="260" rx="12"/></clipPath>
+    <filter id="glow" x="-10%" y="-40%" width="120%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="scan" width="2" height="3" patternUnits="userSpaceOnUse">
+      <rect width="2" height="1" fill="#000" fill-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="960" height="260" fill="url(#sky)"/>
+    <ellipse cx="770" cy="172" rx="300" ry="95" fill="url(#bloom)"/>
+    <circle cx="770" cy="150" r="82" fill="url(#sun)" mask="url(#sunMask)" opacity="0.92"/>
+    <g clip-path="url(#floor)" stroke="#3df5ff" stroke-opacity="0.28" stroke-width="1">
+    <line x1="0" y1="174" x2="960" y2="174"/>
+    <line x1="0" y1="180" x2="960" y2="180"/>
+    <line x1="0" y1="189" x2="960" y2="189"/>
+    <line x1="0" y1="202" x2="960" y2="202"/>
+    <line x1="0" y1="220" x2="960" y2="220"/>
+    <line x1="0" y1="244" x2="960" y2="244"/>
+    <line x1="480" y1="112" x2="-480" y2="260"/>
+    <line x1="480" y1="112" x2="-360" y2="260"/>
+    <line x1="480" y1="112" x2="-240" y2="260"/>
+    <line x1="480" y1="112" x2="-120" y2="260"/>
+    <line x1="480" y1="112" x2="0" y2="260"/>
+    <line x1="480" y1="112" x2="120" y2="260"/>
+    <line x1="480" y1="112" x2="240" y2="260"/>
+    <line x1="480" y1="112" x2="360" y2="260"/>
+    <line x1="480" y1="112" x2="480" y2="260"/>
+    <line x1="480" y1="112" x2="600" y2="260"/>
+    <line x1="480" y1="112" x2="720" y2="260"/>
+    <line x1="480" y1="112" x2="840" y2="260"/>
+    <line x1="480" y1="112" x2="960" y2="260"/>
+    <line x1="480" y1="112" x2="1080" y2="260"/>
+    <line x1="480" y1="112" x2="1200" y2="260"/>
+    <line x1="480" y1="112" x2="1320" y2="260"/>
+    <line x1="480" y1="112" x2="1440" y2="260"/>
+    </g>
+    <rect width="960" height="260" fill="url(#scan)"/>
+  </g>
+
+  <!-- window chrome -->
+  <circle cx="24" cy="22" r="5" fill="#ff4fd8"/>
+  <circle cx="42" cy="22" r="5" fill="#ffb347"/>
+  <circle cx="60" cy="22" r="5" fill="#3df5ff"/>
+  <text x="80" y="27" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace" font-size="13" fill="#a39fc4">~/ale-bles</text>
+  <line x1="0" y1="42" x2="960" y2="42" stroke="#9d6bff" stroke-opacity="0.35"/>
+
+  <!-- prompt -->
+  <text x="48" y="112" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace" font-size="48" font-weight="700" filter="url(#glow)">
+    <tspan fill="#3df5ff">&gt; </tspan><tspan fill="#ff4fd8">ale bles</tspan><tspan fill="#ff4fd8">_<animate attributeName="fill-opacity" values="1;1;0;0" dur="1.1s" repeatCount="indefinite"/></tspan>
+  </text>
+  <text x="48" y="146" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace" font-size="18" fill="#e6e4f5">SDK Development Manager @ Azerion</text>
+  <text x="48" y="170" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace" font-size="14" fill="#a39fc4">HTML5 games · mobile SDKs · homelab · Amsterdam / Almere</text>
+
+  <rect x="0.5" y="0.5" width="959" height="259" rx="12" fill="none" stroke="#9d6bff" stroke-opacity="0.4"/>
+</svg>
